@@ -16,7 +16,7 @@ public class Escalonador {
 	private Map<String, BCP> tabelaProcessos; //pra manter referencia pra todos os processos independente do estado (guarda até os finalizados)
 	
 	private int nInstrucoes; //numero total de instrucoes rodadas
-	private int nQuantums; //numero de quantuns necessarios para executar todos os processos
+	private int nQuanta; //numero de quantuns necessarios para executar todos os processos
 	private int nTrocas; //numero toral de trocas de contexto realizadas
 	
 	private int quantum; //numero de instrucoes
@@ -28,22 +28,48 @@ public class Escalonador {
 		tabelaProcessos = new HashMap<String, BCP>();
 		
 		nInstAtual=0;
+		processoAtual="";
 	}
 
 	public void run(){ //executa todos os programas
 		while(tabelaProcessos.size()>0){
+			if(processoAtual==""){
+				if(prontos.size()>0){
+					processoAtual = prontos.remove(0); //pega o primeiro da fila de prontos
+					
+					//seta os registradores conforme o bcp do processo
+					BCP bcp = tabelaProcessos.get(processoAtual);
+					PC.setValor(bcp.getPC().getValor());
+					X.setValor(bcp.getX().getValor());
+					Y.setValor(bcp.getY().getValor());
+				} else {
+					//caso em que todos estao bloqueados
+				}
+			}
 			while(nInstAtual <= quantum){
 				
 			}
 		}
 	}
 	
+	public void trocaProcesso(){
+		BCP bcp = tabelaProcessos.get(processoAtual);
+		
+		salvaContexto(bcp);
+		
+		
+	}
+	
 	public void bloqueia(){ //salva o contexto e bloqueia o processo atual
 		BCP bcp = tabelaProcessos.get(processoAtual);
+		
 		salvaContexto(bcp);
+		
 		bcp.setEspera(TEMPO_BLOQUEADO);
 		bcp.setEstado(Estado.BLOQUEADO);
+		
 		bloqueados.add(processoAtual);
+		processoAtual="";
 	}
 	
 	public void salvaContexto(BCP bcp){ //salva o contexto do processo atual em seu bcp
