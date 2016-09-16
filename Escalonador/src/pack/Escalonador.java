@@ -36,6 +36,7 @@ public class Escalonador {
 		BCP bcp;
 		String comando;
 		String [] auxiliar;
+		boolean flag = false;
 		while(tabelaProcessos.size()>0){ //roda um quantum inteiro por loop, exceto caso todos estejam bloqueados
 			//if(processoAtual==null){
 			while(prontos.size()==0){
@@ -62,9 +63,11 @@ public class Escalonador {
 					break;
 				case "E/S": //TODO bloqueia o processo, escreve no log, falta escrever no log, melhor fazer no metodo que bloqueia
 					bloqueia(bcp);
+					flag = true;
 					break;
 				case "SAIDA": //encerra o processo
 					encerraProcesso(bcp); //grava as informações no log
+					flag=true;
 					break;
 				default:
 					auxiliar = comando.split("=");
@@ -72,10 +75,10 @@ public class Escalonador {
 					if(auxiliar[0].charAt(0)=='X') X.setValor(valor);
 					else Y.setValor(valor);
 				}
-				if(bcp.getEstado()!=Estado.BLOQUEADO) break;
+				if(flag) break;
 			}
 			
-			if(bcp.getEstado() != Estado.BLOQUEADO){
+			if(!flag){
 				trocaProcesso(bcp);
 			}
 			
