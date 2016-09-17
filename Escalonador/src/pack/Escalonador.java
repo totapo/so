@@ -1,9 +1,14 @@
 package pack;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Escalonador {
 	public static final int MAX_INSTRUCOES = 21;
@@ -26,10 +31,45 @@ public class Escalonador {
 	private Registrador PC,X,Y; //registradores
 	
 	public Escalonador(String pasta){ //le a pasta e instancia os objetos necessarios
-		tabelaProcessos = new HashMap<String, BCP>();
+		tabelaProcessos = new TreeMap<String, BCP>();
+		
+		lerArquivos(pasta);
 		
 		nInstAtual=0;
 		processoAtual=null;
+	}
+
+	private void lerArquivos(String p) {
+		File pasta = new File(p);
+		BufferedReader fr;
+		String name,linha;
+		String[] comandos;
+		BCP b;
+		if(pasta.isDirectory()){
+			File[] files = pasta.listFiles();
+			Arrays.sort(files);
+			for(File f : files){
+				try {
+					fr = new BufferedReader(new FileReader(f));
+				
+					if(f.getName().equals("quantum.txt")){
+						quantum = Integer.parseInt(fr.readLine().trim());
+					} else {
+						name = fr.readLine().trim();
+						comandos = new String[21];
+						for(int i=0; i<21 && (linha =fr.readLine())!=null;i++){
+							comandos[i] = linha.trim();
+						}
+						b = new BCP(name,comandos,Estado.PRONTO);
+						//TODO gravar no log
+						tabelaProcessos.put(name, b);
+						prontos.add(name);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public void run(){ //executa todos os programas

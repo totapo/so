@@ -1,7 +1,7 @@
 package pack; 
 
 
-public class BCP implements Comparable<BCP>{
+public class BCP {
 	private Registrador PC,X,Y;
 	private String nome;
 	private String[] comandos; //considere como se fosse o programa na memória
@@ -52,11 +52,6 @@ public class BCP implements Comparable<BCP>{
 	
 	public int getEspera(){
 		return nEspera;
-	}
-
-	@Override
-	public int compareTo(BCP o) {
-		return this.nome.compareTo(o.nome);
 	}
 	
 }
