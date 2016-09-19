@@ -22,6 +22,10 @@ public class BCP {
 		return comandos;
 	}
 	
+	public String getNome(){
+		return this.nome;
+	}
+	
 	public Registrador getPC(){
 		return PC;
 	}
