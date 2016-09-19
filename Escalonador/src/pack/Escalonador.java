@@ -82,7 +82,6 @@ public class Escalonador implements Runnable {
 							comandos[i] = linha.trim();
 						}
 						b = new BCP(name, comandos, Estado.PRONTO);
-						// TODO gravar no log
 						tabelaProcessos.put(name, b);
 						prontos.add(name);
 					}
@@ -132,9 +131,7 @@ public class Escalonador implements Runnable {
 				switch (comando) {
 				case "COM": // nÃ£o faz nada
 					break;
-				case "E/S": // TODO bloqueia o processo, escreve no log, falta
-							// escrever no log, melhor fazer no metodo que
-							// bloqueia
+				case "E/S": // bloqueia o processo, escreve no log
 					bloqueia(bcp);
 					flag = true;
 					break;
@@ -168,7 +165,7 @@ public class Escalonador implements Runnable {
 		gravaLog();
 	}
 
-	private void encerraProcesso(BCP bcp) { // TODO gravar no log
+	private void encerraProcesso(BCP bcp) {
 		adicionaLog("Processo " + tabelaProcessos.get(processoAtual).getNome()
 				+ " interrompido Após " + nInstAtual + " instruções");// Grava
 																		// no
@@ -201,7 +198,6 @@ public class Escalonador implements Runnable {
 	private void trocaProcesso(BCP bcp) { // salva o contexto e passa o processo
 											// atual para o fim da fila de
 											// prontos
-		// TODO gravar no log
 		salvaContexto(bcp);
 
 		bcp.setEstado(Estado.PRONTO);
@@ -216,7 +212,6 @@ public class Escalonador implements Runnable {
 
 	private void bloqueia(BCP bcp) { // salva o contexto e bloqueia o processo
 										// atual
-		// TODO gravar no log
 		salvaContexto(bcp);
 
 		bcp.setEspera(TEMPO_BLOQUEADO);
@@ -249,9 +244,10 @@ public class Escalonador implements Runnable {
 		try {
 			double mediaTrocas, mediaInstQuantum;
 			mediaTrocas = (double) nTrocas / (double) nProcessos;
-			mediaInstQuantum = (double) nInstrucoes / (double) nTrocas;
+			mediaInstQuantum = (double) nInstrucoes / (double) nQuanta;
 			adicionaLog("Media de trocas: "+mediaTrocas);
 			adicionaLog("Media de Instrucoes: "+mediaInstQuantum);
+			adicionaLog("Quantum: "+quantum);
 			String nomeArq;
 			nomeArq = (quantum < 10) ? "log0" + quantum : "log" + quantum;
 			File arqSaida = new File(nomeArq);
