@@ -73,9 +73,8 @@ public class Escalonador implements Runnable {
 						quantum = Integer.parseInt(fr.readLine().trim());
 					} else {
 						nProcessos++;
-						adicionaLog("Carregando " + f.getName());// Registra no
-																	// log
 						name = fr.readLine().trim();
+						adicionaLog("Carregando " +name);// Registra no log
 						comandos = new String[21];
 						for (int i = 0; i < 21
 								&& (linha = fr.readLine()) != null; i++) {
@@ -110,8 +109,7 @@ public class Escalonador implements Runnable {
 												// prontos
 
 			adicionaLog("Executando "
-					+ tabelaProcessos.get(processoAtual).getNome());// Grava no
-																	// log
+					+ processoAtual);// Grava no log
 			// seta os registradores conforme o bcp do processo
 			bcp = tabelaProcessos.get(processoAtual);
 			PC.setValor(bcp.getPC().getValor());
@@ -121,8 +119,7 @@ public class Escalonador implements Runnable {
 			bcp.setEstado(Estado.EXECUTANDO);
 			// }
 			while (nInstAtual < quantum) {
-				nInstAtual++; // aumenta o numero de instrucoes executadas no
-								// quantum
+				nInstAtual++; // aumenta o numero de instrucoes executadas no quantum
 				nInstrucoes++; // aumenta o numero de instrucoes executadas
 				comando = bcp.getComandos()[PC.getValor()]; // pega o comando a
 															// ser executado
