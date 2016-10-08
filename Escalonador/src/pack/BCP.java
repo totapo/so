@@ -1,19 +1,16 @@
 package pack; 
 
 
-public class BCP {
-	private Registrador PC,X,Y;
-	private String nome;
-	private String[] comandos; //considere como se fosse o programa na memória
+public class BCP { //classe que representa um Bloco de Controle de Processo
+	private int PC,X,Y; //para guradar os valores dos registradores de uso geral
+	private String nome; //nome do programa
+	private String[] comandos; //é uma referência ao programa na memória
 	
-	private Estado estado;
+	private Estado estado; //indica o estado atual do programa
 	private int nEspera; //numero de quanta que deve esperar para sair de bloqueado
 	
 	public BCP(String nome, String[] comandos, Estado estado){
 		this.nome = nome;
-		PC = new Registrador();
-		X = new Registrador();
-		Y = new Registrador();
 		this.comandos = comandos;
 		this.estado = estado;
 	}
@@ -26,16 +23,28 @@ public class BCP {
 		return this.nome;
 	}
 	
-	public Registrador getPC(){
+	public int getPC(){
 		return PC;
 	}
 	
-	public Registrador getX(){
+	public int getX(){
 		return X;
 	}
 	
-	public Registrador getY(){
+	public int getY(){
 		return Y;
+	}
+	
+	public void setPC( int v){
+		PC = v;
+	}
+	
+	public void setX(int v){
+		X=v;
+	}
+	
+	public void setY(int v){
+		Y=v;
 	}
 
 	public Estado getEstado(){

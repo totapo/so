@@ -22,14 +22,11 @@ public class Escalonador implements Runnable {
 	private List<String> bloqueados;
 	private String processoAtual;
 
-	private Map<String, BCP> tabelaProcessos; // pra manter referencia pra todos
-												// os processos independente do
-												// estado (guarda atÃ© os
-												// finalizados)
+	private Map<String, BCP> tabelaProcessos; // pra manter referencia pra todos os processos 
 
 	private int nInstrucoes; // numero total de instrucoes rodadas
-	private int nQuanta; // numero de quanta necessarios para executar todos os
-							// processos
+	private int nQuanta; // numero de quanta necessarios para executar todos os processos
+	
 	private int nTrocas; // numero toral de trocas de contexto realizadas
 	private int nProcessos;// numero total de processos
 
@@ -81,8 +78,8 @@ public class Escalonador implements Runnable {
 							comandos[i] = linha.trim();
 						}
 						b = new BCP(name, comandos, Estado.PRONTO);
-						tabelaProcessos.put(name, b);
-						prontos.add(name);
+						tabelaProcessos.put(name, b); //adiciona o bcp do processo na tabela de processos
+						prontos.add(name); //adiciona o processo na fila de prontos
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -99,11 +96,8 @@ public class Escalonador implements Runnable {
 		while (tabelaProcessos.size() > 0) { // roda um quantum inteiro por
 												// loop, exceto caso todos
 												// estejam bloqueados
-			// if(processoAtual==null){
-			while (prontos.size() == 0) {
-				decrementaTempoBloqueados(); // TODO PERGUNTAR SE DEVE CONTAR
-												// QUANTUM AQUI, CASO EM Q TODOS
-												// TAO BLOQUEADOS
+			while (prontos.size() == 0) {  //se todos estiverem bloqueados
+				decrementaTempoBloqueados();  //não contamos os quantuns passados aqui nas estatisticas
 			}
 			processoAtual = prontos.remove(0); // pega o primeiro da fila de
 												// prontos
@@ -112,12 +106,12 @@ public class Escalonador implements Runnable {
 					+ processoAtual);// Grava no log
 			// seta os registradores conforme o bcp do processo
 			bcp = tabelaProcessos.get(processoAtual);
-			PC.setValor(bcp.getPC().getValor());
-			X.setValor(bcp.getX().getValor());
-			Y.setValor(bcp.getY().getValor());
+			PC.setValor(bcp.getPC());
+			X.setValor(bcp.getX());
+			Y.setValor(bcp.getY());
 
 			bcp.setEstado(Estado.EXECUTANDO);
-			// }
+			
 			while (nInstAtual < quantum) {
 				nInstAtual++; // aumenta o numero de instrucoes executadas no quantum
 				nInstrucoes++; // aumenta o numero de instrucoes executadas
@@ -226,9 +220,9 @@ public class Escalonador implements Runnable {
 
 	private void salvaContexto(BCP bcp) { // salva o contexto do processo atual
 											// em seu bcp
-		bcp.getPC().setValor(PC.getValor());
-		bcp.getX().setValor(X.getValor());
-		bcp.getY().setValor(Y.getValor());
+		bcp.setPC(PC.getValor());
+		bcp.setX(X.getValor());
+		bcp.setY(Y.getValor());
 		nTrocas++;
 	}
 
