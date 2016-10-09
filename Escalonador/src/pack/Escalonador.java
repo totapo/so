@@ -149,13 +149,14 @@ public class Escalonador implements Runnable {
 
 			// aumenta o numero de quanta e reseta o numero de instrucoes
 			// executadas
-			nQuanta++;
-			nInstAtual = 0;
 			decrementaTempoBloqueados();
 			if(flagBlock){
 				bloqueia(bcp); // grava as informaÃ§Ãµes no log
 				flagBlock=false;
 			}
+			nQuanta++;
+			nInstAtual = 0;
+			
 			flag = false;
 		}
 		gravaLog();
