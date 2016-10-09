@@ -93,6 +93,7 @@ public class Escalonador implements Runnable {
 		String comando;
 		String[] auxiliar;
 		boolean flag = false;// indica que o processo foi encerrado ou bloqueado
+		boolean flagBlock = false; //indica que o processo deve ser bloqueado
 		while (tabelaProcessos.size() > 0) { // roda um quantum inteiro por
 												// loop, exceto caso todos
 												// estejam bloqueados
@@ -123,11 +124,11 @@ public class Escalonador implements Runnable {
 				case "COM": // nÃ£o faz nada
 					break;
 				case "E/S": // bloqueia o processo, escreve no log
-					bloqueia(bcp);
+					flagBlock=true;
 					flag = true;
 					break;
 				case "SAIDA": // encerra o processo
-					encerraProcesso(bcp); // grava as informaÃ§Ãµes no log
+					encerraProcesso(bcp);
 					flag = true;
 					break;
 				default:
@@ -151,6 +152,10 @@ public class Escalonador implements Runnable {
 			nQuanta++;
 			nInstAtual = 0;
 			decrementaTempoBloqueados();
+			if(flagBlock){
+				bloqueia(bcp); // grava as informaÃ§Ãµes no log
+				flagBlock=false;
+			}
 			flag = false;
 		}
 		gravaLog();
