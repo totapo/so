@@ -1,0 +1,5 @@
+package model.database;
+
+public enum Codigo {
+	INSERT,DELETE,UPDATE,SELECT_ID,SELECT_LIKE,SELECT_ALL,SELECT_MED,SELECT_SENS_BOIA
+}

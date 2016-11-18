@@ -1,0 +1,20 @@
+Instruções de execução:
+
+No terminal, estando no diretório que contém este arquivo.
+
+Para executar o projeto:
+	java -cp ./bin pack.Main
+
+Caso queira compilar o projeto, crie uma pasta onde ficarão os bytecodes (<pasta>):
+	javac -d <pasta> -cp ./src src/pack/Main.java
+
+	Para rodar o projeto compilado basta:
+		java -cp <pasta> main.MainGame
+
+Na execução é importante que a pasta “processos” faça parte do diretório a partir do qual o programa foi chamado.
+
+Integrantes
+Mateus Angelo		n°9377532
+Matheus de Sousa	n°9360753
+Marcos Felipe 		n°9277711
+Matheus Veneziani 	n°9277638
